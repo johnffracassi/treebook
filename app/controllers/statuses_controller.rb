@@ -1,24 +1,43 @@
 class StatusesController < ApplicationController
+  before_filter :authenticate_user!, only: [:new, :create, :edit, :update]
+
   before_action :set_status, only: [:show, :edit, :update, :destroy]
 
   # GET /statuses
   # GET /statuses.json
   def index
     @statuses = Status.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @statuses }
+    end
   end
 
   # GET /statuses/1
   # GET /statuses/1.json
   def show
+    @status = Status.find(params[:id]) 
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @status }
+    end
   end
 
   # GET /statuses/new
+  # GET /statuses/new.json
   def new
     @status = Status.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @status }
+    end
   end
 
-  # GET /statuses/1/edit
+   # GET /statuses/1/edit
   def edit
+    @status = Status.find(params[:id])
   end
 
   # POST /statuses
@@ -67,8 +86,9 @@ class StatusesController < ApplicationController
       @status = Status.find(params[:id])
     end
 
+    # THIS REPLACES ATTR_ACCESSIBLE
     # Never trust parameters from the scary internet, only allow the white list through.
     def status_params
-      params.require(:status).permit(:name, :content)
+      params.require(:status).permit(:user_id, :content)
     end
 end
