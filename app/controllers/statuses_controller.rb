@@ -18,6 +18,7 @@ class StatusesController < ApplicationController
   # GET /statuses/1.json
   def show
     @status = Status.find(params[:id]) 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @status }
@@ -43,7 +44,7 @@ class StatusesController < ApplicationController
   # POST /statuses
   # POST /statuses.json
   def create
-    @status = Status.new(status_params)
+    @status = current_user.statuses.new(status_params)
 
     respond_to do |format|
       if @status.save
@@ -59,8 +60,10 @@ class StatusesController < ApplicationController
   # PATCH/PUT /statuses/1
   # PATCH/PUT /statuses/1.json
   def update
+    @status = current_user.statuses.find(params[:id])
+
     respond_to do |format|
-      if @status.update(status_params)
+      if status_params && @status.update(status_params)
         format.html { redirect_to @status, notice: 'Status was successfully updated.' }
         format.json { render :show, status: :ok, location: @status }
       else
@@ -88,7 +91,14 @@ class StatusesController < ApplicationController
 
     # THIS REPLACES ATTR_ACCESSIBLE
     # Never trust parameters from the scary internet, only allow the white list through.
+    # The params in a controller is an instance of ActionController::Parameters, which provides several methods 
+    # like require and permit.
+    # The require method ensures that a specific parameter is present, if it's not provided, the require method 
+    # throws an error. 
+    # It returns an instance of ActionController::Parameters for the key passed into require.
+    # The permit method returns a copy of the parameters object, returning only the permitted keys and values. 
+    # So when creating a new ActiveRecord model, only the permitted attributes are passed into the model.
     def status_params
-      params.require(:status).permit(:user_id, :content)
+      params.require(:status).permit(:content) if (params[:status])
     end
 end

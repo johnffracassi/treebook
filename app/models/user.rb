@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
                            }
 
   has_many :statuses #ruby know you are referring to the Status model here
+  has_many :user_friendships
+  has_many :friends, through: :user_friendships
 
 # THIS DEFINES A METHOD IN THE USER MODEL
   def full_name

@@ -4,8 +4,8 @@ johnfrac:
   email: "johnffracassi@gmail.com"
   profile_name: "johnfrac"
 
-  herb:
-    first_name: "Herb"
-    last_name: "Herbie"
-    e-mail: "h@aol.com"
-    profile_name: "herbie01"
+herb:
+  first_name: "Herb"
+  last_name: "Herbie"
+  email: "h@aol.com"
+  profile_name: "herbie01"
